@@ -35,7 +35,7 @@ prod-job:
     paths:
       - dist/
   only:
-    - master
+    - main
   except:
     - triggers
 
