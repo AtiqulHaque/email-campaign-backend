@@ -1,0 +1,30 @@
+image: node:latest
+
+# Script executed before the various pipeline build stages are run - sets up the environment
+before_script:
+# Defines the stages in the Gitlab-CI Pipeline
+stages:
+  - prod
+
+
+variables:
+  BUNDLE_SRC: deploy-code-atik.zip # defines the zipfile to upload to S3
+  ZIP_NAME: dh-web-ui-deploy-atik.zip
+
+
+stages:
+  - stage1
+  - stage2
+
+build:
+  stage: stage1
+  script:
+    - echo "We are currently in stage 1"
+    - echo "These are the contents of node project"
+    - echo $example
+
+test:
+  stage: stage2
+  script:
+    - echo "We are currently in stage 2"
+    - echo "running nodejs script"

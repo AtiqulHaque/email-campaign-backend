@@ -1,19 +1,44 @@
-variables:
-  example: this is an example variable
+image: node:latest
 
+# Script executed before the various pipeline build stages are run - sets up the environment
+before_script:
+# Defines the stages in the Gitlab-CI Pipeline
 stages:
-  - stage1
-  - stage2
+  - prod
 
-build:
-  stage: stage1
-  script:
-    - echo "We are currently in stage 1"
-    - echo "These are the contents of node project"
-    - echo $example
 
-test:
-  stage: stage2
+# Defines the Container environment variables
+variables:
+  BUNDLE_SRC: deploy-code.zip # defines the zipfile to upload to S3
+  ZIP_NAME: dh-web-ui-deploy.zip
+
+
+### DEPLOY ####################################################
+prod-job:
   script:
-    - echo "We are currently in stage 2"
-    - echo "running nodejs script"
+    - apt-get update -qq && apt-get install -y -qq unzip zip git
+    - apt-get install -y python3-distutils
+    - curl -O https://bootstrap.pypa.io/get-pip.py
+    - python3 get-pip.py
+    - npm install
+    - rm -rf dist *.zip deploy-base
+    - unset CI
+    - export NODE_OPTIONS="--max-old-space-size=8192"
+    - mv -f dist deploy-base
+    - zip -r $BUNDLE_SRC deploy-base scripts appspec.yml
+    - pip install awscli  # AWS CLI installation
+  stage: prod #assigns the stage as deploy
+  environment: production # Assign the Gitlab Environment for tracking purposes
+  cache:
+    key: "ui-$CI_BUILD_NAME-$CI_BUILD_REF_NAME"
+    untracked: true
+    paths:
+      - dist/
+  only:
+    - master
+  except:
+    - triggers
+
+
+
+
