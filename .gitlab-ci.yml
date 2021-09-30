@@ -24,7 +24,7 @@ prod-job:
     - rm -rf dist *.zip deploy-base
     - unset CI
     - export NODE_OPTIONS="--max-old-space-size=8192"
-    - mv -f dist deploy-base
+#    - mv -f dist deploy-base
     - zip -r $BUNDLE_SRC ./
     - pip install awscli  # AWS CLI installation
     - aws s3 cp $BUNDLE_SRC $AWS_S3_LOCATION$ZIP_NAME # Uploads the zipfile to S3 and expects the AWS Code Pipeline/Code Deploy to pick up
