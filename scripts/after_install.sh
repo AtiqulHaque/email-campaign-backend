@@ -11,4 +11,5 @@ touch $LOG
 /user/bin/sudo /bin/chown -R ec2-user:ec2-user $HOME
 echo -e "Done" >> $LOG
 
+
 /bin/echo "$(date '+%Y-%m-%d %X') : ** After Install Hook Completed **" >> $LOG
