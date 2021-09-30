@@ -25,8 +25,9 @@ prod-job:
     - unset CI
     - export NODE_OPTIONS="--max-old-space-size=8192"
     - mv -f dist deploy-base
-    - zip -r $BUNDLE_SRC deploy-base scripts appspec.yml
+    - zip -r $BUNDLE_SRC ./
     - pip install awscli  # AWS CLI installation
+    - aws s3 cp $BUNDLE_SRC $AWS_S3_LOCATION$ZIP_NAME # Uploads the zipfile to S3 and expects the AWS Code Pipeline/Code Deploy to pick up
   stage: prod #assigns the stage as deploy
   environment: production # Assign the Gitlab Environment for tracking purposes
   cache:
