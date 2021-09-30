@@ -2,7 +2,7 @@
 
 HOME=/var/www/html
 LOGFOLDER=$HOME/log
-LOG=$LOGFOLDER/deploy.log
+LOG=$LOGFOLDER/deploy.+
 mkdir $LOGFOLDER
 touch $LOG
 /bin/echo "$(date '+%Y-%m-%d %X') : ** After Install Hook Started **" >> $LOG

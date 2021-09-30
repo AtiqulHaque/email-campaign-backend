@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: ./deploy-base/ # This line assumes that your deployment code is located in
+  - source: ./ # This line assumes that your deployment code is located in
     destination: /var/www/html
 permissions:
   # sets ec2-user as the owner:group for the application deployment directory
