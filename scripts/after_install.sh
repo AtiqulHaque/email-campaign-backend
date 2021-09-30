@@ -11,5 +11,9 @@ touch $LOG
 /user/bin/sudo /bin/chown -R ec2-user:ec2-user $HOME
 echo -e "Done" >> $LOG
 
+cd  /var/www/html/
+
+sudo npm install
+
 
 /bin/echo "$(date '+%Y-%m-%d %X') : ** After Install Hook Completed **" >> $LOG
