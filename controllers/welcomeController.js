@@ -5,7 +5,7 @@ const Response = require("../utilities/response");
 
 function home(req, res, next) {
   try {
-    res.json("Its a new life... again");
+    res.json("Its a new life... again again");
   } catch (err) {
     next(err);
   }
