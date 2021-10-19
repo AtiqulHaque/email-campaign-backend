@@ -4,9 +4,9 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-// const aupairRouter = require("./routers/aupairRouter");
-// const hostFamilyRouter = require("./routers/hostFamilyRouter");
-// const authRouter = require("./routers/authRouter");
+const campaignRouter = require("./routers/campaignRouter");
+const authRouter = require("./routers/authRouter");
+const { addCampaign } = require("./controllers/campaignController");
 const { home } = require("./controllers/welcomeController");
 
 const {
@@ -32,15 +32,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // parse cookies
-//app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.get("/", home);
 
-// app.use("/user", authRouter);
-//
-// app.use("/aupair", aupairRouter);
-//
-// app.use("/host-family", hostFamilyRouter);
+app.use("/campaign", campaignRouter);
 
 //Not found Hnadler
 app.use(notFoundHandler);

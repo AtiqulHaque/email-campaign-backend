@@ -3,9 +3,9 @@ const uploader = require("../../utilities/singleUploader");
 function avatarUpload(req, res, next) {
   const upload = uploader(
     "avatars",
-    ["image/jpeg", "image/jpg", "image/png"],
+    ["application/vnd.ms-excel"],
     1000000,
-    "Only .jpg, jpeg or .png format allowed!"
+    "Only .csv format allowed!"
   );
 
   // call the middleware function

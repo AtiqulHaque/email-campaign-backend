@@ -9,7 +9,7 @@ const {
   deleteHostFamily,
 } = require("../controllers/hostFamilyControlle");
 
-const avatarUpload = require("../middlewares/users/avatarUpload");
+const avatarUpload = require("../middlewares/campaign/avatarUpload");
 
 const {
   addHFamilyValidators,
