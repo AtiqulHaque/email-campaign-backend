@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/Aupair");
 const Response = require("../utilities/response");
 // get login page
 

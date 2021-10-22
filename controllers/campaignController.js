@@ -1,59 +1,81 @@
-const bcrypt = require("bcrypt");
 const Response = require("../utilities/response");
-const fs = require('fs');
-const AWS = require('aws-sdk');
-
-const s3 = new AWS.S3({
-  accessKeyId: process.env.accessKeyId,
-  secretAccessKey: process.env.secretAccessKey
-});
-
-$filePath = "/home/atiqul/docker-project/practice-deployment/public/uploads/attachments/sample.csv";
-
-// get login page
+const db = require("../models");
+const Campaign = db.CampaignModel;
+const Contact = db.ContactModel;
+const Op = db.Sequelize.Op;
 
 async function getAllCampaign(req, res, next) {
   try {
-    res.json("All campaign listing here....");
+    let fieldList = [
+      "campaigns_name",
+      "email_subject",
+      "email_body",
+      "status",
+      "created_at",
+      "schedule_time",
+      "total_contacts",
+      "unique_identifier",
+    ];
+    await Campaign.findAll({ attributes: fieldList })
+      .then((data) => {
+        res.json(Response.success(data, Response.startTime));
+      })
+      .catch((err) => {
+        res.status(500).json(Response.errorWithMessage(err.message));
+      });
   } catch (err) {
     next(err);
   }
 }
-
-async function addCampaignRouter(req, res, next) {
-
-
+async function getCampaignContacts(req, res, next) {
   try {
-    uploadFile($filePath);
-    res.status(200).json({
-      message: "User was added successfully!",
-    });
+    let fieldList = [
+      "contact_id",
+      "name",
+      "email",
+      "send_at",
+      "status",
+      "campaign_indentifier",
+      "created_at",
+    ];
+    await Contact.findAll({ attributes: fieldList })
+      .then((data) => {
+        res.json(Response.success(data, Response.startTime));
+      })
+      .catch((err) => {
+        res.status(500).json(Response.errorWithMessage(err.message));
+      });
   } catch (err) {
     next(err);
   }
 }
 
-
-const uploadFile = ($filePath) => {
-
-  fs.readFile($filePath,'utf-8',  (err, data) => {
-    if (err) throw err;
-    const params = {
-      Bucket: 'technokids-2021', // pass your bucket name
-      Key: 'contacts.csv', // file will be saved as testBucket/contacts.csv
-      Body : data
+async function addCampaign(req, res, next) {
+  try {
+    const campaignData = {
+      campaigns_name: req.body.campaigns_name,
+      email_body: req.body.body,
+      email_subject: req.body.subject,
+      status: req.body.status,
+      schedule_time: req.body.scheduleDateTime,
+      unique_identifier: req.campaign_identifirer,
+      personalize_text: req.body.personalize_text,
     };
-
-    s3.upload(params, (s3Err, data) => {
-      if (s3Err) throw s3Err;
-      console.log(`File uploaded successfully at ${data.Location}`)
-    });
-  });
-};
-
-
+    console.log(campaignData);
+    Campaign.create(campaignData)
+      .then((data) => {
+        res.json(Response.success(data, Response.startTime));
+      })
+      .catch((err) => {
+        res.status(500).json(err.message);
+      });
+  } catch (err) {
+    next(err);
+  }
+}
 
 module.exports = {
   getAllCampaign,
-  addCampaignRouter,
+  addCampaign,
+  getCampaignContacts,
 };

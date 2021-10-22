@@ -1,30 +1,30 @@
 // external imports
 const express = require("express");
+const attchmentUploader = require("../middlewares/campaign/multipleAttchmentUpload");
 
 // internal imports
 const {
-  addCampaignRouter,
-    getAllCampaign
+  addCampaign,
+  getAllCampaign,
+  getCampaignContacts,
 } = require("../controllers/campaignController");
-
-const attachMentUpload = require("../middlewares/campaign/attachmentUpload");
 
 const {
   addUserValidators,
   addUserValidationHandler,
-  updateUserValidators,
 } = require("../middlewares/users/userValidators");
 const router = express.Router();
 
-
 router.post(
-    "/add",
-    ...addUserValidators,
-    addUserValidationHandler,
-    addCampaignRouter
+  "/add",
+  attchmentUploader,
+  addUserValidators,
+  addUserValidationHandler,
+  addCampaign
 );
 
-
 router.get("/lists", getAllCampaign);
+
+router.get("/contact/lists", getCampaignContacts);
 
 module.exports = router;
