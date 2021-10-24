@@ -1,8 +1,9 @@
 module.exports = {
-  HOST: process.env.DB_NAME,
-  USER: process.env.DB_USER,
-  PASSWORD: process.env.DB_PASSWORD,
-  DB: process.env.DB_NAME,
+  HOST: "beta-metigey.cpw4x2qhelvv.ap-south-1.rds.amazonaws.com",
+  USER: "betametigy",
+  PASSWORD: "betametigy123",
+  DB: "metigy-campaign",
+  PORT: 3306,
   dialect: "mysql",
   pool: {
     max: 5,
