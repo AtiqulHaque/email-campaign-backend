@@ -2,7 +2,6 @@ const Response = require("../utilities/response");
 const db = require("../models");
 const Campaign = db.CampaignModel;
 const Contact = db.ContactModel;
-const Op = db.Sequelize.Op;
 
 async function getAllCampaign(req, res, next) {
   try {
@@ -15,13 +14,14 @@ async function getAllCampaign(req, res, next) {
       "schedule_time",
       "total_contacts",
       "unique_identifier",
+      "isScheduled",
     ];
     await Campaign.findAll({ attributes: fieldList })
       .then((data) => {
         res.json(Response.success(data, Response.startTime));
       })
       .catch((err) => {
-        res.status(500).json(Response.errorWithMessage(err.message));
+        res.status(500).json(err.message);
       });
   } catch (err) {
     next(err);
@@ -30,7 +30,7 @@ async function getAllCampaign(req, res, next) {
 async function getCampaignContacts(req, res, next) {
   try {
     let fieldList = [
-      "contact_id",
+      "id",
       "name",
       "email",
       "send_at",
@@ -38,7 +38,12 @@ async function getCampaignContacts(req, res, next) {
       "campaign_indentifier",
       "created_at",
     ];
-    await Contact.findAll({ attributes: fieldList })
+    await Contact.findAll({
+      where: {
+        campaign_indentifier: req.params.identifier,
+      },
+      attributes: fieldList,
+    })
       .then((data) => {
         res.json(Response.success(data, Response.startTime));
       })
@@ -56,12 +61,17 @@ async function addCampaign(req, res, next) {
       campaigns_name: req.body.campaigns_name,
       email_body: req.body.body,
       email_subject: req.body.subject,
-      status: req.body.status,
+      status: 0,
       schedule_time: req.body.scheduleDateTime,
       unique_identifier: req.campaign_identifirer,
-      personalize_text: req.body.personalize_text,
+      isScheduled: req.body.is_schedule,
     };
-    console.log(campaignData);
+
+    if (req.body.is_schedule == 0) {
+      delete campaignData.schedule_time;
+    }
+
+    console.log(campaignData, req.body.is_schedule);
     Campaign.create(campaignData)
       .then((data) => {
         res.json(Response.success(data, Response.startTime));

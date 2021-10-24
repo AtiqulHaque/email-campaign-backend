@@ -1,19 +1,24 @@
+import { DataGrid } from "@material-ui/data-grid";
 import React from "react";
-import DataGrid from "react-data-grid";
 import { connect } from "react-redux";
 import { campaign } from "../_actions";
 const columns = [
-  { key: "contact_id", name: "ID" },
-  { key: "name", name: "Name" },
-  { key: "email", name: "Email" },
-  { key: "campaign_indentifier", name: "Campaign Identifier" },
-  { key: "send_at", name: "Send at" },
+  { field: "id", headerName: "ID", width: 200 },
+  { field: "name", headerName: "Name", width: 200 },
+  { field: "email", headerName: "Email", width: 200 },
+  {
+    field: "campaign_indentifier",
+    headerName: "Campaign Identifier",
+    width: 350,
+  },
+  { field: "created_at", headerName: "Created", width: 200 },
+  { field: "status", headerName: "Status", width: 200 },
+  { field: "send_at", headerName: "Send at", width: 200 },
 ];
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCampaignContacts: (article) =>
-      dispatch(campaign.getCampaignContacts(article)),
+    getCampaignContacts: (id) => dispatch(campaign.getCampaignContacts(id)),
   };
 }
 
@@ -24,11 +29,20 @@ class CampaignContacts extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getCampaignContacts();
+    this.props.getCampaignContacts(this.props.match.params.identifier);
   }
 
   render() {
-    return <DataGrid columns={columns} rows={this.props.contacts} />;
+    return (
+      <div style={{ height: 800, width: "100%" }}>
+        <DataGrid
+          rows={this.props.contacts}
+          columns={columns}
+          pageSize={100}
+          rowsPerPageOptions={[2, 5, 7]}
+        />
+      </div>
+    );
   }
 }
 

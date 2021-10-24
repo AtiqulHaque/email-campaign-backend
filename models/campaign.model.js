@@ -32,6 +32,10 @@ module.exports = (sequelize, Sequelize) => {
       total_contacts: {
         type: Sequelize.INTEGER,
       },
+      isScheduled: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       timestamps: false,

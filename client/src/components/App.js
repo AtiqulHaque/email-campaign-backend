@@ -22,7 +22,10 @@ class App extends React.Component {
         <Route path="/" exact component={CampaignSummary} />
         <Route path="/campaign-lists" component={CampaignLists} />
         <Route path="/campaign-add" component={CampaignForm} />
-        <Route path="/campaign-contacts" component={CampaignContacts} />
+        <Route
+          path="/campaign-contacts/:identifier"
+          component={CampaignContacts}
+        />
       </Router>
     );
   }

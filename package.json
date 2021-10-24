@@ -4,8 +4,8 @@
   "description": "cultural pair api",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon app.js",
-    "prod": "NODE_ENV=production node app.js",
+    "start": "NODE_ENV=development nodemon -r dotenv/config  app.js",
+    "prod": "NODE_ENV=production node -r dotenv/config app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

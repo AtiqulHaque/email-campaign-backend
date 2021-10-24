@@ -1,5 +1,4 @@
 import { CampaignConstants } from "../_constants";
-
 export const campaign = {
   loadDashboard,
   createCampaign,
@@ -11,6 +10,7 @@ const BASE_URL = "http://localhost:3000";
 const getCampaignListSuccess = (lists) => ({
   type: CampaignConstants.CAMPAIGN_LIST_SUCCESS,
   payload: lists,
+  loading: false,
 });
 
 const getCampaignContactList = (lists) => ({
@@ -23,9 +23,20 @@ const setMessageText = (msg) => ({
   payload: { message: msg },
 });
 
+const campaignLoading = (msg) => ({
+  type: CampaignConstants.LOADING,
+  payload: true,
+});
+
 const setButtonText = (msg) => ({
   type: CampaignConstants.CAMPAIGN_SUBMIT_LOADING,
   payload: { buttonText: msg },
+});
+
+const campaignSubmitSuccess = (msg) => ({
+  type: CampaignConstants.CAMPAIGN_SUBMIT_SUCCESS,
+  payload: { buttonText: "Submit" },
+  message: "Campaign Creation start",
 });
 
 const setValidationError = (payload) => ({
@@ -35,6 +46,8 @@ const setValidationError = (payload) => ({
 
 function loadDashboard() {
   return (dispatch) => {
+    dispatch(campaignLoading());
+
     fetch(BASE_URL + "/campaign/lists")
       .then((response) => response.json())
       .then((data) => {
@@ -46,9 +59,9 @@ function loadDashboard() {
   };
 }
 
-function getCampaignContacts() {
+function getCampaignContacts(id) {
   return (dispatch) => {
-    fetch(BASE_URL + "/campaign/contact/lists")
+    fetch(BASE_URL + "/campaign/contact/lists/" + id)
       .then((response) => response.json())
       .then((data) => {
         dispatch(getCampaignContactList(data.payload));
@@ -79,13 +92,16 @@ function createCampaign(params, callback) {
         const data = JSON.parse(text);
 
         if (data.status === "validation-error") {
+          dispatch(setButtonText("Oppps Submit again..."));
           dispatch(setValidationError(data.payload));
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
         }
-        dispatch(setButtonText("Sorrry Submit Again"));
-        if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
+
+        dispatch(setButtonText("Submit"));
+        dispatch(campaignSubmitSuccess());
 
         callback();
       });

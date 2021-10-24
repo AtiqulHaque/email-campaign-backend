@@ -1,8 +1,8 @@
 module.exports = {
-  HOST: "rds-campaign.ccwrcwjkxjrb.ap-southeast-1.rds.amazonaws.com",
-  USER: "campaignadmin",
-  PASSWORD: "123qweqaz",
-  DB: "metigy-campaign",
+  HOST: process.env.DB_NAME,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB: process.env.DB_NAME,
   dialect: "mysql",
   pool: {
     max: 5,

@@ -20,6 +20,7 @@ export function campaign(state = initialState, action) {
     case CampaignConstants.CAMPAIGN_LIST_SUCCESS:
       return Object.assign({}, state, {
         campaigns: action.payload,
+        loading: action.loading,
       });
     case CampaignConstants.CAMPAIGN_CONTACT_LIST_SUCCESS:
       return Object.assign({}, state, {
@@ -40,9 +41,9 @@ export function campaign(state = initialState, action) {
 
     case CampaignConstants.CAMPAIGN_SUBMIT_SUCCESS:
       return Object.assign({}, state, {
-        isAvailable: action.payload.isAvailable,
-        buttonText: action.payload.buttonText,
-        message: action.payload.message,
+        buttonText: state.buttonText,
+        errors: action.payload,
+        message: action.message,
       });
     case CampaignConstants.AVAILABLE_LOADING:
       return Object.assign({}, state, {

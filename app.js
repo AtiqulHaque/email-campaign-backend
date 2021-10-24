@@ -5,6 +5,7 @@ const cors = require("cors");
 const campaignRouter = require("./routers/campaignRouter");
 const { home } = require("./controllers/welcomeController");
 const formidable = require("express-formidable");
+require("dotenv").config();
 const {
   notFoundHandler,
   errorHandler,

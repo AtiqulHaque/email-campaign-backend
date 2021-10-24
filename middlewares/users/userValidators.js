@@ -9,27 +9,33 @@ const addUserValidators = [
     .isAlpha("en-US", { ignore: " -" })
     .withMessage("Campaign name must not contain anything other than alphabet")
     .trim(),
-  body("subject")
+  body(
+    "subject",
+    "Subject is required && Subject must not contain anything other than alphabet"
+  )
     .isLength({ min: 10 })
     .isLength({ max: 100 })
     .withMessage("Subject is required")
     .isAlpha("en-US", { ignore: " -" })
-    .withMessage("Subject must not contain anything other than alphabet")
     .trim(),
-  body("body")
+  body("body", "Invalid email addressbody")
     .isLength({ min: 10 })
     .isLength({ max: 5000 })
-    .withMessage("Invalid email addressbody")
     .trim(),
-  body("scheduleDateTime")
-    .notEmpty()
-    .withMessage("Invalid Schedule Date time Date")
-    .trim(),
-  body("status").isBoolean().withMessage("Campaign Status must be  0 or 1"),
 ];
 
 const addUserValidationHandler = function (req, res, next) {
   const errors = validationResult(req);
+
+  if (req.files.length == 0) {
+    console.log(errors);
+    errors.errors.push({
+      value: "",
+      msg: "Attachment Required must be *.csv files",
+      param: "Attachments",
+      location: "body",
+    });
+  }
 
   const mappedErrors = errors.mapped();
 

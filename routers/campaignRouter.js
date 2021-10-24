@@ -25,6 +25,6 @@ router.post(
 
 router.get("/lists", getAllCampaign);
 
-router.get("/contact/lists", getCampaignContacts);
+router.get("/contact/lists/:identifier", getCampaignContacts);
 
 module.exports = router;

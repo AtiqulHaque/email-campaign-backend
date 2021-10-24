@@ -18,11 +18,10 @@ class CampaignForm extends React.Component {
       campaigns_name: "",
       email_subject: "",
       email_body: "",
-      status: "",
       schedule_time: new Date(),
       personalize_text: "",
       attachments: {},
-      is_schedule: false,
+      is_schedule: 0,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,7 +38,7 @@ class CampaignForm extends React.Component {
   }
 
   handleScheduleChanged(event) {
-    let isSchedule = this.state.is_schedule ? false : true;
+    let isSchedule = this.state.is_schedule ? 0 : 1;
 
     console.log(isSchedule);
 
@@ -59,14 +58,13 @@ class CampaignForm extends React.Component {
     const formData = new FormData();
 
     formData.append("campaigns_name", this.state.campaigns_name);
+    formData.append("is_schedule", this.state.is_schedule);
     formData.append("body", this.state.email_body);
     formData.append("subject", this.state.email_subject);
-    formData.append("status", this.state.status);
     formData.append(
       "scheduleDateTime",
       moment(this.state.schedule_time).format("YYYY-MM-DD hh:mm:ss a")
     );
-    formData.append("personalize_text", this.state.personalize_text);
     for (const key in this.state.attachments) {
       if (Object.hasOwnProperty.call(this.state.attachments, key)) {
         const element = this.state.attachments[key];
@@ -138,18 +136,6 @@ class CampaignForm extends React.Component {
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
-                Personalize Text
-              </label>
-              <input
-                type="text"
-                name="personalize_text"
-                className="form-control"
-                onChange={this.handleInputChanged}
-                id="exampleInputPassword1"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="exampleInputPassword1" className="form-label">
                 Email Body
               </label>
               <textarea
@@ -189,23 +175,7 @@ class CampaignForm extends React.Component {
                 className="form-control-file"
                 id="exampleFormControlFile1"
               />
-            </div>
-
-            <div className="mb-3 form-check">
-              <ErrorComponent errors={this.props.errors} name="status" />
-
-              <input
-                onChange={this.handleInputChanged}
-                name="status"
-                type="checkbox"
-                className="form-check-input"
-                id="exampleCheck1"
-                value="1"
-              />
-
-              <label className="form-check-label" htmlFor="exampleCheck1">
-                Enable
-              </label>
+              <ErrorComponent errors={this.props.errors} name="Attachments" />
             </div>
             <button type="submit" className="btn btn-primary">
               {this.props.buttonText}
