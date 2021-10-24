@@ -1,17 +1,3 @@
-image: node:latest
-
-# Script executed before the various pipeline build stages are run - sets up the environment
-before_script:
-# Defines the stages in the Gitlab-CI Pipeline
-stages:
-  - prod
-
-
-# Defines the Container environment variables
-variables:
-  BUNDLE_SRC: deploy-code.zip # defines the zipfile to upload to S3
-  ZIP_NAME: dh-web-ui-deploy.zip
-
 
 ### DEPLOY ####################################################
 prod-job:

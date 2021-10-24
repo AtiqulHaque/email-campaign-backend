@@ -1,7 +1,7 @@
-version: '3'
+version: "3"
 services:
-#Docker Networks
-  client:
+  #Docker Networks
+  clientreact:
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
@@ -9,10 +9,27 @@ services:
       dockerfile: Dockerfile
       context: ./client
     volumes:
-      - './:/app'
-      - '/app/node_modules'
+      - "./:/app"
+      - "/app/node_modules"
     ports:
       - "3033:3000"
+    networks:
+      - app-network
+    command: npm start
+
+    #Docker Networks
+  backend:
+    stdin_open: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    volumes:
+      - "./:/app"
+      - "/app/node_modules"
+    ports:
+      - "3333:3001"
     networks:
       - app-network
     command: npm start
@@ -24,6 +41,3 @@ networks:
 volumes:
   dbdata:
     driver: local
-  dbpostdata:
-    driver: local
-  redis-data:

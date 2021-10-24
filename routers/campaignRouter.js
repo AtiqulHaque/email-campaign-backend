@@ -1,7 +1,11 @@
 // external imports
 const express = require("express");
 const attchmentUploader = require("../middlewares/campaign/multipleAttchmentUpload");
-
+const {
+  addUserValidators,
+  addUserValidationHandler,
+  campaignDetailsValidators,
+} = require("../middlewares/campaign/userValidators");
 // internal imports
 const {
   addCampaign,
@@ -9,10 +13,6 @@ const {
   getCampaignContacts,
 } = require("../controllers/campaignController");
 
-const {
-  addUserValidators,
-  addUserValidationHandler,
-} = require("../middlewares/users/userValidators");
 const router = express.Router();
 
 router.post(

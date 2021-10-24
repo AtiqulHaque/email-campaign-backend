@@ -7,26 +7,23 @@ function notFoundHandler(req, res, next) {
 
 // default error handler
 function errorHandler(err, req, res, next) {
-
-  if(res.headersSent){
-    next("There was an error!")
+  if (res.headersSent) {
+    next("There was an error!");
   } else {
-  if (process.env.NODE_ENV === "development") {
-     console.error(err);
-     res.error =  { 
-        status : "error",
-        message: err.message
+    if (process.env.NODE_ENV === "development") {
+      console.error(err);
+      res.error = {
+        status: "error",
+        message: err.message,
       };
-  } else {
-    console.log(err.message);
-    res.error = {  status : "error", message: "Internal Server Error" };
-  }
-  
-  res.status(err.status || 500);
-  res.json(res.error);
-}
- 
+    } else {
+      console.log(err.message);
+      res.error = { status: "error", message: "Internal Server Error" };
+    }
 
+    res.status(err.status || 500);
+    res.json(res.error);
+  }
 }
 
 module.exports = {

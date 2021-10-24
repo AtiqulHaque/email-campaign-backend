@@ -2,7 +2,7 @@ const Response = require("../utilities/response");
 const db = require("../models");
 const Campaign = db.CampaignModel;
 const Contact = db.ContactModel;
-
+const { check, oneOf, validationResult } = require("express-validator");
 async function getAllCampaign(req, res, next) {
   try {
     let fieldList = [
